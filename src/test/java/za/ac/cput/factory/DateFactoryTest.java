@@ -12,15 +12,16 @@ public class DateFactoryTest {
 
     private Date testDate;
 
+    // Creates basic review object to be used in tests
     @BeforeEach
     void setUp() {
-        testDate = new Date.DateBuilder()
-                .dateID(324)
-                .day("1")
-                .month("October")
-                .year("2004")
-                .build();
-    }
+   testDate = DateFactory.createDate(
+           "Saturday",
+           "October",
+           2004);
+   }
+
+
 
     @Test
     @Order(1)
@@ -32,35 +33,41 @@ public class DateFactoryTest {
     @Test
     @Order(2)
     public void testDateValues() {
-        assertEquals(324, testDate.getDateID());
-        assertEquals("1", testDate.getDay());
+
+        assertEquals("Saturday", testDate.getDay());
         assertEquals("October", testDate.getMonth());
-        assertEquals("2004", testDate.getYear());
+        assertEquals(2004, testDate.getYear());
         System.out.println(testDate.toString());
     }
 
     @Test
     @Order(3)
-    public void testInvalidID() {
+    public void testInvalidYear() {
         assertThrows(IllegalArgumentException.class, () ->
-                DateFactory.createDate(-6, "15", "October", "1738"));
+                DateFactory.createDate( "Sunday ", "October", -32232123 ));
     }
 
     @Test
     @Order(4)
     public void testEmptyDay() {
         assertThrows(IllegalArgumentException.class, () ->
-                DateFactory.createDate(1, "", "August", "2019"));
+                DateFactory.createDate( " ", "August", 2019));
     }
 
     @Test
     @Order(5)
+    public void testInvalidMonth() {
+        assertThrows(IllegalArgumentException.class, () ->
+                DateFactory.createDate( "Saturday ", " 666 doajdiaw#!&*&$*(@ndiaew dawwdwa3223 wawadia#!&*&$*(@wdiwanmdiwand#!&*&$*(@njfnjeafaefoa ", 2019));
+    }
+
+    @Test
+    @Order(6)
     public void testCreateBasic() {
-        Date basicDate = DateFactory.createBasic();
-        assertNotNull(basicDate);
-        assertEquals(1, basicDate.getDateID());
-        assertEquals("15", basicDate.getDay());
-        assertEquals("10", basicDate.getMonth());
-        assertEquals("2023", basicDate.getYear());
+        Date basicDate = DateFactory.createDate("Wednesday" ,"October" ,2002 );
+        assertEquals("Wednesday", basicDate.getDay());
+        assertEquals("October", basicDate.getMonth());
+        assertEquals(2002, basicDate.getYear());
+
     }
 }
